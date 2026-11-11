@@ -1,0 +1,17 @@
+{
+  "music": "private/voice.wav",
+  "musicDb": 0,
+  "duration": 59,
+  "sfxDir": "../../assets/sfx",
+  "align": "onset",
+  "cues": [
+    ["paper_fold", 9.0, -16],
+    ["paper_fold", 12.6, -16],
+    ["paper_fold", 20.6, -14],
+    ["coins", 34.0, -10],
+    ["tap", 36.2, -14], ["tap", 36.7, -14], ["tap", 37.2, -14],
+    ["boing", 48.0, -12],
+    ["reveal", 52.3, -16],
+    ["chime_ok", 55.9, -16]
+  ]
+}
