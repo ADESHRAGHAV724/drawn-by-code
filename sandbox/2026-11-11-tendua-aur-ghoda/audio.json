@@ -1,0 +1,17 @@
+{
+  "music": "private/voice.wav",
+  "musicDb": 0,
+  "duration": 68.5,
+  "sfxDir": "../../assets/sfx",
+  "align": "onset",
+  "cues": [
+    ["desert_wind", 0.0, -26],
+    ["swoosh_in", 58.45, -4],
+    ["ball_knock", 58.6, -3],
+    ["whoosh_close", 59.2, -10],
+    ["desert_wind", 60.4, -24],
+    ["reveal", 62.4, -16],
+    ["chime_ok", 65.0, -16],
+    ["desert_wind", 65.5, -26]
+  ]
+}
