@@ -5,8 +5,8 @@ description: Warli style, in testing: the tribal wall painting of Maharashtra, I
 
 # Style · Warli
 
-In testing. Reference so far: `styles/warli/template.js` (4 s). No style test in `sandbox/`
-yet: make one (`node engine/new.mjs <name> --style warli`) before calling the style approved.
+In testing. Style test: `sandbox/2026-11-11-meri-video/` (a car hits the village tree, 10 s;
+review/sheet.jpg), with a car, a crash burst, falling leaves and dizzy stars in its `cast.js`.
 
 ## Code
 
@@ -55,6 +55,7 @@ yet: make one (`node engine/new.mjs <name> --style warli`) before calling the st
 - [ ] Every person has two triangles meeting at the waist; women read by skirt and bun.
 - [ ] In a ring, the neighbours' hands meet (let `tarpaRing` choose the count).
 - [ ] No motif crosses the border; trees and birds stay inside the frame.
+- [ ] Nothing white passes over something white without a rim of wall round it; no bird or star sits over a filled area.
 - [ ] Birds never fly with level wings (they read as planes): they beat from half to fully raised.
 - [ ] Tree forks leave from the top of their limb: no stub sticking out past a fork.
 - [ ] Moves on twos; nothing slides on a smooth curve except the slow turn of the sun or ring.
@@ -66,3 +67,6 @@ yet: make one (`node engine/new.mjs <name> --style warli`) before calling the st
   wobble is capped at about 1.6 units.
 - Smear arcs on the wall above ~2 % alpha read as stains on top of the painting, not as
   plaster underneath.
+- Paste on paste merges into one shape: a car passing a hut read as one blob, and birds
+  perched among the leaves vanished. Knock out whatever passes in front with a rim of wall
+  colour (meri-video's `Cast.car`), and keep small motifs on open wall.
