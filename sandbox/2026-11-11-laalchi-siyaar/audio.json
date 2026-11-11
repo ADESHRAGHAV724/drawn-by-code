@@ -1,0 +1,23 @@
+{
+  "music": "private/voice.wav",
+  "musicDb": 0,
+  "duration": 67.5,
+  "sfxDir": "../../assets/sfx",
+  "align": "onset",
+  "cues": [
+    ["desert_wind", 0.0, -26],
+    ["swoosh_in", 12.0, -8],
+    ["ball_knock", 12.3, -9],
+    ["drawer_thud", 19.6, -7],
+    ["drawer_thud", 22.4, -10],
+    ["drawer_thud", 24.9, -9],
+    ["drawer_thud", 26.0, -12],
+    ["tap", 50.2, -16], ["tap", 50.6, -16], ["tap", 51.0, -16], ["tap", 51.4, -16], ["tap", 51.8, -16], ["tap", 52.2, -16], ["tap", 52.6, -16], ["tap", 53.0, -16], ["tap", 53.4, -16], ["tap", 53.8, -16], ["tap", 54.2, -16],
+    ["spark_snap", 54.6, -4],
+    ["ball_knock", 54.7, -2],
+    ["drawer_thud", 55.6, -8],
+    ["bell_ding", 56.0, -18],
+    ["desert_wind", 59.5, -24],
+    ["reveal", 61.9, -16]
+  ]
+}
