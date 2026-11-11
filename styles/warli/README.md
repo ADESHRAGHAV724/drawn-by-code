@@ -28,4 +28,5 @@ npm run preview    # http://127.0.0.1:5173
 
 ## Made with it
 
-Nothing yet: the style test is next.
+- [meri-video](../../sandbox/2026-11-11-meri-video/) · a car hits the village tree, 10 s · [mp4](../../sandbox/2026-11-11-meri-video/render/meri-video.mp4)
+- [sone-ka-anda](../../sandbox/2026-11-11-sone-ka-anda/) · the golden egg, 54 s, Hindi voice-over · [mp4](../../sandbox/2026-11-11-sone-ka-anda/render/sone-ka-anda.mp4)

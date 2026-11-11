@@ -149,6 +149,24 @@ const Warli = (() => {
                 return { armR: [-0.8, -1.3], armL: mir([-0.8, -1.3]), legR: [1.3, 1.5], legL: mir([1.3, 1.5]), lean: 0 };
             case 'play': // both hands at the mouth (tarpa, flute)
                 return { armR: [0.2, -2.3], armL: [-0.15, -2.6], legR: [1.25, 1.55], legL: mir([1.25, 1.55]), lean: -0.04 + 0.03 * s };
+            // the following poses face the way the figure faces: both arms or both legs
+            // reach forward, so they are not mirrored
+            case 'sit': // on the ground, legs forward, hands on the knees
+                return { armR: [1.0, 0.25], armL: [1.2, 0.35], legR: [0.05, 1.5], legL: [0.15, 1.55], lean: 0.05 };
+            case 'grieve': // sitting, head in the hands, bent forward
+                return { armR: [-1.0, -2.9], armL: [-2.1, -0.25], legR: [-0.25, 1.75], legL: [-0.15, 1.8], lean: 0.3 + 0.07 * s };
+            case 'kneel': // on the knees, shins flat behind, hands searching in front
+                return { armR: [0.7 + 0.25 * s, 0.9], armL: [0.9 - 0.25 * s, 1.1], legR: [1.45, Math.PI - 0.05], legL: [1.6, Math.PI - 0.05], lean: 0.3 };
+            case 'hold': // both hands up in front, holding something high
+                return { armR: [-0.7, -1.5], armL: [-0.95, -1.35], legR: [1.3, 1.5], legL: mir([1.3, 1.5]), lean: -0.05 };
+            case 'carry': // both hands at the chest, holding something against it
+                return { armR: [1.15, -0.45], armL: [1.35, -0.3], legR: [1.3, 1.5], legL: mir([1.3, 1.5]), lean: 0 };
+            case 'reach': // one arm straight out in front (giving, grabbing, pushing)
+                return { armR: [0.1, 0.0], armL: mir([1.2, 1.45]), legR: [1.3, 1.5], legL: mir([1.3, 1.5]), lean: 0.05 };
+            case 'creep': // bent forward on bent knees, the right arm raised behind the head
+                return { armR: [-1.9, -2.4 + 0.15 * s], armL: [0.5, 0.9], legR: [0.9 + 0.3 * s, 1.9], legL: [2.0 - 0.3 * s, 1.5], lean: 0.25 };
+            case 'strike': // the raised arm brought down in front
+                return { armR: [0.55, 1.0], armL: [1.5, 1.6], legR: [0.85, 1.7], legL: [2.0, 1.55], lean: 0.3 };
             default: // stand
                 return { armR: [1.2, 1.45], armL: mir([1.2, 1.45]), legR: [1.3, 1.5], legL: mir([1.3, 1.5]), lean: 0 };
         }
@@ -157,12 +175,25 @@ const Warli = (() => {
     /**
      * A Warli person standing on (x, y), H tall. Two filled triangles meeting at the waist
      * (a woman's lower triangle is a wider skirt, and she wears a bun), a round head, stick
-     * limbs. pose: from pose() or your own angles. Returns the world positions of the head,
-     * hands and feet in the current coordinates (before any transform you applied).
+     * limbs. pose: from pose() or your own angles. plant drops a sitting or kneeling figure
+     * onto y; rim draws it on a rim of wall colour (rimColor: the wall as it looks, e.g. at
+     * night) so it reads in front of other paste.
+     * Returns the world positions of the head, hands and feet in the current coordinates
+     * (before any transform you applied).
      */
     function human(g, x, y, H, p = pose('stand'), o = {}) {
-        const { sex = 'm', seed = 'h', t = null, facing = 1, pot = false } = o;
+        const { sex = 'm', seed = 'h', t = null, facing = 1, pot = false, plant = false, rim = false } = o;
         const lw = Math.max(1.4, H * 0.028);
+        // rim: first the same figure, fatter, in wall colour, so it reads in front of
+        // another paste motif (paste on paste merges into one shape)
+        if (rim) human(g, x, y, H, p, { ...o, rim: false, ink: o.rimColor ?? WALL, widen: lw * 3 });
+        const ink = o.ink ?? PASTE, widen = o.widen ?? 0;
+        const S = (gg, pts, oo) => stroke(gg, pts, { ...oo, color: ink, w: oo.w + widen, dry: widen ? 0 : oo.dry });
+        const F = (gg, pts, oo) => {
+            fill(gg, pts, { ...oo, color: ink, holes: widen ? 0 : oo.holes });
+            if (widen) stroke(gg, pts, { w: widen, color: ink, closed: true, dry: 0, seed: oo.seed + 'rim' });
+        };
+        const D = (gg, px, py, r, oo) => dot(gg, px, py, r + widen / 2, { ...oo, color: ink, holes: widen ? 0 : oo.holes });
         const shY = -0.74 * H, waistY = -0.5 * H, waist = [0, waistY];
         const sw = 0.155 * H;
         const hw = sex === 'f' ? 0.21 * H : 0.13 * H, hipY = sex === 'f' ? -0.22 * H : -0.31 * H;
@@ -170,6 +201,17 @@ const Warli = (() => {
         const up = (q) => rot(q, lean * facing, waist);
         const sd = seedOf(seed, t);
         const out = {};
+        // plant: drop the figure so the lowest knee or foot touches y (sitting, kneeling)
+        const legLen0 = (-(sex === 'f' ? -0.22 * H : -0.31 * H) - 0.03 * H) / 2 + 0.01 * H;
+        let low = -Infinity;
+        if (plant) {
+            const hy = sex === 'f' ? -0.22 * H : -0.31 * H;
+            for (const [a, b] of [p.legL, p.legR]) {
+                const ky = hy + Math.sin(a) * legLen0;
+                low = Math.max(low, ky, ky + Math.sin(b) * legLen0);
+            }
+            y -= low;
+        }
         g.save();
         g.translate(x, y);
         if (facing < 0) g.scale(-1, 1);
@@ -179,36 +221,36 @@ const Warli = (() => {
         const legLen = (-hipY - 0.03 * H) / 2 + 0.01 * H;
         [['L', p.legL, roots[0], -1], ['R', p.legR, roots[1], 1]].forEach(([k, [a, b], r0, side]) => {
             const knee = polar(r0, a, legLen), foot = polar(knee, b, legLen);
-            stroke(g, [r0, knee, foot], { w: lw, seed: sd + 'leg' + k, dry: 0.15 });
-            stroke(g, [foot, [foot[0] + side * 0.05 * H, foot[1] + 0.004 * H]], { w: lw * 0.9, seed: sd + 'ft' + k, dry: 0.4 });
+            S(g, [r0, knee, foot], { w: lw, seed: sd + 'leg' + k, dry: 0.15 });
+            S(g, [foot, [foot[0] + side * 0.05 * H, foot[1] + 0.004 * H]], { w: lw * 0.9, seed: sd + 'ft' + k, dry: 0.4 });
             out['foot' + k] = foot;
         });
 
         // body
-        fill(g, [waist, [hw, hipY], [-hw, hipY]], { seed: sd + 'lo', wob: lw * 0.35 });
-        fill(g, [up([-sw, shY]), up([sw, shY]), waist], { seed: sd + 'up', wob: lw * 0.35 });
+        F(g, [waist, [hw, hipY], [-hw, hipY]], { seed: sd + 'lo', wob: lw * 0.35 });
+        F(g, [up([-sw, shY]), up([sw, shY]), waist], { seed: sd + 'up', wob: lw * 0.35 });
 
         // arms from the shoulder corners
         const armLen = 0.155 * H;
         [['L', p.armL, -1], ['R', p.armR, 1]].forEach(([k, [a, b], side]) => {
             const s0 = up([side * sw * 0.94, shY + 0.012 * H]);
             const el = polar(s0, a + lean, armLen), hand = polar(el, b + lean, armLen * 0.95);
-            stroke(g, [s0, el, hand], { w: lw, seed: sd + 'arm' + k, dry: 0.15 });
-            dot(g, hand[0], hand[1], lw * 0.75, { seed: sd + 'hd' + k, holes: 0 });
+            S(g, [s0, el, hand], { w: lw, seed: sd + 'arm' + k, dry: 0.15 });
+            D(g, hand[0], hand[1], lw * 0.75, { seed: sd + 'hd' + k, holes: 0 });
             out['hand' + k] = hand;
         });
 
         // neck, head, bun, pot
         const neck = up([0, shY]), head = up([0, -0.865 * H]), hr = 0.075 * H;
-        stroke(g, [neck, up([0, -0.8 * H])], { w: lw, seed: sd + 'nk', dry: 0 });
-        dot(g, head[0], head[1], hr, { seed: sd + 'hd' });
+        S(g, [neck, up([0, -0.8 * H])], { w: lw, seed: sd + 'nk', dry: 0 });
+        D(g, head[0], head[1], hr, { seed: sd + 'hd' });
         if (sex === 'f') {
             const bun = up([-0.07 * H, -0.85 * H]);
-            dot(g, bun[0], bun[1], hr * 0.5, { seed: sd + 'bun', holes: 0 });
+            D(g, bun[0], bun[1], hr * 0.5, { seed: sd + 'bun', holes: 0 });
         }
         if (pot) {
             const pc = up([0, -1.0 * H]);
-            fill(g, [...circle(pc[0], pc[1], 0.06 * H, 18, 0, Math.PI), [pc[0] - 0.03 * H, pc[1] - 0.075 * H], [pc[0] + 0.03 * H, pc[1] - 0.075 * H]], { seed: sd + 'pot', wob: 0.6 });
+            F(g, [...circle(pc[0], pc[1], 0.06 * H, 18, 0, Math.PI), [pc[0] - 0.03 * H, pc[1] - 0.075 * H], [pc[0] + 0.03 * H, pc[1] - 0.075 * H]], { seed: sd + 'pot', wob: 0.6 });
         }
         out.head = head;
         g.restore();

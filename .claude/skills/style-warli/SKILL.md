@@ -5,8 +5,11 @@ description: Warli style, in testing: the tribal wall painting of Maharashtra, I
 
 # Style · Warli
 
-In testing. Style test: `sandbox/2026-11-11-meri-video/` (a car hits the village tree, 10 s;
-review/sheet.jpg), with a car, a crash burst, falling leaves and dizzy stars in its `cast.js`.
+In testing. Style test: `sandbox/2026-11-11-meri-video/` (a car hits the village tree, 10 s),
+with a car, a crash burst, falling leaves and dizzy stars in its `cast.js`. First film:
+`sandbox/2026-11-11-sone-ka-anda/` (the golden egg, 54 s, Hindi voice-over), whose `cast.js`
+has a hen and rooster, the golden egg, a basket, a nest, a cow, a market stall, a sickle,
+thought bubbles and a rich house; Devanagari text in Kalam (`fonts/Kalam-Regular.ttf`, OFL).
 
 ## Code
 
@@ -16,8 +19,8 @@ review/sheet.jpg), with a car, a crash burst, falling leaves and dizzy stars in 
 |---|---|
 | `stroke(g, pts, { w, prog, dry, wob, seed, t })` | a rice-paste line from a bamboo twig: fatter where it lands, wobbling along its normal, thinner and broken over the `dry` tail. `prog` paints it on; `t` makes it boil on twos |
 | `fill(g, pts, { wob, holes, seed })` · `dot` · `ring` | a filled paste shape with a wobbling edge and tiny pores of wall where the paste is thin |
-| `human(g, x, y, H, pose, { sex, facing, pot, seed })` | a person standing on (x, y): two triangles meeting at the waist (a woman: a wider skirt and a bun), round head, stick limbs, a pot on the head. Returns `{ head, handL, handR, footL, footR }` in world coordinates |
-| `pose(name, ph)` | `stand`, `dance`, `link` (tarpa ring), `walk`, `raise`, `play`; `ph` 0..1 is the phase of the move |
+| `human(g, x, y, H, pose, { sex, facing, pot, plant, rim, rimColor, seed })` | a person standing on (x, y): two triangles meeting at the waist (a woman: a wider skirt and a bun), round head, stick limbs, a pot on the head. `plant` drops a sitting or kneeling figure onto y; `rim` draws it on a rim of wall colour (`rimColor`: the wall as it looks now) so it reads in front of other paste. Returns `{ head, handL, handR, footL, footR }` in world coordinates |
+| `pose(name, ph)` | `stand`, `dance`, `link` (tarpa ring), `walk`, `raise`, `play`, and facing-forward poses `sit`, `grieve` (head in hands), `kneel`, `hold` (both hands high), `carry` (at the chest), `reach`, `creep`, `strike`; `ph` 0..1 is the phase of the move |
 | `tarpaRing(g, cx, cy, R, { H, t, spin, appear, count, women })` | the dance ring: feet on the circle, heads out, the number of dancers chosen so the hands meet; `appear` makes them join one by one |
 | `tarpaPlayer(g, x, y, H, { ph })` | the man at the centre blowing the gourd horn |
 | `sun(g, x, y, r, { spin, grow })` · `moon` | disc, ring and a crown of triangle rays · crescent |
@@ -30,9 +33,10 @@ review/sheet.jpg), with a car, a crash burst, falling leaves and dizzy stars in 
 
 ## Style rules
 
-- **Two colours.** Rice-paste white (`PASTE` #f2eadb) on a mud wall (`WALL` #7b3b22, or a
-  darker `WALL_DARK` for night). No shading, no gradients on the figures, no third colour.
-  The wall carries all the texture; the paint is flat with a few pores.
+- **Two colours.** Rice-paste white (`PASTE` #f2eadb) on a mud wall (`WALL` #7b3b22; night is
+  a dark tint over the wall, under the paint). No shading, no gradients on the figures. One
+  accent is allowed only when the story is about it, and only on that thing: the gold of the
+  golden egg (sone-ka-anda: eggs, a coin, their rays — never people or text).
 - **Geometry is the grammar.** Circle (sun, moon, head), triangle (mountains, trees, the
   two halves of a body), square (the chowk, a hut). A person is always two triangles that
   touch at the waist, never a filled body or a stick torso.
@@ -70,3 +74,9 @@ review/sheet.jpg), with a car, a crash burst, falling leaves and dizzy stars in 
 - Paste on paste merges into one shape: a car passing a hut read as one blob, and birds
   perched among the leaves vanished. Knock out whatever passes in front with a rim of wall
   colour (meri-video's `Cast.car`), and keep small motifs on open wall.
+- Paste on paste again, in the film: a man walking past the hut merged with it. People who
+  cross other motifs get `rim: true`, and at night `rimColor` must be the darkened wall, or
+  every figure wears a brown halo.
+- A dialogue hold is still a still frame: keep something alive on twos (a flock crossing,
+  hands at work, shoulders sobbing). Only a pause the story wants (the breath before the
+  strike, the silence after it) stays still.
