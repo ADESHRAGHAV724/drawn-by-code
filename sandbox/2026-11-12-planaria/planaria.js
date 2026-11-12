@@ -101,6 +101,14 @@ const Plan = (() => {
 
     // the painted body (straight), cached per look
     function bodySprite(env, look) {
+        if (look.endsWith('-grey')) {
+            // a dying worm: the same body, ashen (made once from the coloured one)
+            const base = bodySprite(env, look.slice(0, -5));
+            return Motion.sprite('plan:body:' + look, base.box, base.canvas.width / base.box.w, (c) => {
+                c.filter = 'grayscale(0.9) brightness(0.85) contrast(0.85)';
+                c.drawImage(base.canvas, base.box.x, base.box.y, base.box.w, base.box.h);
+            });
+        }
         return Motion.sprite('plan:body:' + look, { x: -10, y: -HW, w: L + 20, h: 2 * HW }, env.k * 1.5, (c) => {
             const r = Motion.rng('plan' + look);
             const xray = look === 'xray', pale = look === 'pale';
@@ -285,7 +293,8 @@ const Plan = (() => {
      * head up to paleTo), headless, neo (0–1 neoblasts lit), neoColor, shadow, alpha.
      */
     function draw(g, env, x, y, ang, len, o = {}) {
-        const { t = 0, look = 'normal', bend = 0.18, freq = 1.3, s0 = 0, s1 = 1, pale = 0, neo = 0, alpha = 1, shadow = true } = o;
+        const { t = 0, look = 'normal', bend = 0.18, freq = 1.3, s0 = 0, s1 = 1, pale = 0, neo = 0, shadow = true } = o;
+        const alpha = o.neoOnly ? 1 : o.alpha ?? 1;
         if (alpha <= 0) return;
         const pts = o.pts || spine(x, y, ang, len, t, bend, freq);
         g.save();
@@ -294,13 +303,16 @@ const Plan = (() => {
             const m = pts[Math.round(((s0 + s1) / 2) * (pts.length - 1))];
             Note.shadow(g, env, m[0] + 6, m[1] + 12, len * (s1 - s0) * 0.55, len * 0.09, 0.55);
         }
-        const body = bodySprite(env, o.headless ? 'headless' : look);
-        strips(g, body, pts, len, s0, s1);
+        if (!o.neoOnly) {
+            const body = bodySprite(env, o.headless ? 'headless' : look);
+            strips(g, body, pts, len, s0, s1);
+        }
         if (pale > 0) strips(g, bodySprite(env, 'pale'), pts, len, s0, Math.min(s1, 0.3), pale);
         if (neo > 0) {
             const sc = len / L;
             for (const [s, yy, ph] of NEO) {
                 if (s < s0 || s > s1) continue;
+                if (o.neoFrom != null && Math.abs(s - o.neoFrom) > (o.neoSpread ?? 1)) continue;
                 const p = pts[Math.min(pts.length - 1, Math.round(s * (pts.length - 1)))];
                 const nx = -Math.sin(p[2]), ny = Math.cos(p[2]);
                 const tw = 0.6 + 0.4 * Math.sin(t * 4 + ph * TAU);

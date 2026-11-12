@@ -38,6 +38,13 @@ Space Mono (labels), Patrick Hand (hand-written numbers).
 | `scope(g, env, cx, cy, R, inside)` | microscope field: cells in the background, `inside(g)` clipped, inner shadow, black rim, scale bar |
 | `circleNum` · `redLine` · `callout` · `card` · `tornLabel` · `shadow` | red hand-drawn circled numbers and lines, a magnifier callout with leader lines, kraft cards, a torn label, a soft contact shadow |
 
+`styles/cinematic-facts/props.js` → `Props`: `geiger(g, env, t, x, y, s, level, { probe })` (a
+yellow counter, needle driven by `level`, coiled cord, probe), `mannequin(g, env, x, y, s, rot, grey)`
+(a wooden artist's mannequin; `grey` turns it ashen), `squiggles(g, t, a, {...})` (red radiation
+lines drawing down the page), `needle(g, x, y, ang)` (a glass micro-needle), `greySprite`.
+Under-water shots can sit between notebook pages (planaria: a pebbly bed out of focus, sliding
+caustic nets, `Cine.rays`, `Cine.particles`, a dark band under the caption).
+
 ## Workflow: a facts Short from script to MP4
 
 The user makes animal-facts Shorts for a Hindi-speaking YouTube channel (talks in Hinglish).
@@ -92,3 +99,4 @@ ball-and-stick molecule), `sandbox/2026-11-12-jellyfish/scene.js` (a moon jelly)
 - 2026-11-12 · octopus · Fast cutting (a shot every 1.5–3 s) reads as energetic when each cut has a short white flash (~0.12 s) and a zoom punch that settles; declare every shot in `shots`, or review.mjs reports the cuts as jumps. Coloured lines over glows must be drawn opaque: additive blue on a glow sums to white.
 - 2026-11-12 · planaria · A radial gradient that fades to `rgba(0,0,0,0)` darkens a light page: canvas interpolates through grey. Fade a blotch to its own colour with alpha 0 (`'#b39870' + '00'`). In a cached sprite a one-time `filter: blur()` is fine (soft pigment, gut, sheen); stacked hard insets read as contour lines.
 - 2026-11-12 · planaria · A soft animal that bends (a worm, an eel) is painted once straight and drawn along a spine in thin rotated strips (`planaria.js`): all the detail of a sprite, any pose, and pieces after a cut are just a range of strips.
+- 2026-11-12 · planaria · The user wants text only where a picture can't carry it (the hook claim, a number, the call to follow); everything else told by objects: counters, props, hand-written one-word labels.

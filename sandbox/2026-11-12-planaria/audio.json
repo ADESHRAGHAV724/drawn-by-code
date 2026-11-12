@@ -1,13 +1,15 @@
 {
-  "duration": 15,
+  "duration": 20,
   "sfxDir": "../../assets/sfx",
   "align": "onset",
   "cues": [
-    ["cavity_hum", 0.0, -24], ["pencil_circle", 0.7, -14], ["spark_snap", 1.35, -10],
-    ["page_turn", 2.6, -14], ["tick", 2.85, -16], ["tick", 3.1, -16], ["tick", 3.35, -16], ["tick", 3.6, -16], ["tick", 3.85, -16], ["tick", 4.1, -16], ["stamp", 4.3, -10],
-    ["page_turn", 5.2, -14], ["scan", 5.6, -14], ["glow_swell", 6.1, -14], ["pencil_circle", 6.5, -16], ["pencil_circle", 6.8, -16], ["pencil_circle", 7.1, -16],
-    ["page_turn", 8.0, -14], ["scribble", 8.2, -16], ["spark_snap", 8.75, -10], ["field_bloom", 9.2, -16],
-    ["page_turn", 10.6, -14], ["paper_land", 10.75, -12], ["paper_land", 10.87, -12], ["paper_land", 10.99, -12], ["paper_land", 11.11, -12], ["stamp", 11.8, -8],
-    ["page_turn", 12.9, -14], ["button_click", 13.5, -8]
+    ["cavity_hum", 0.0, -26], ["pencil_circle", 0.7, -14], ["spark_snap", 1.35, -10],
+    ["page_turn", 2.4, -14], ["tick", 2.65, -16], ["tick", 2.87, -16], ["tick", 3.09, -16], ["tick", 3.31, -16], ["tick", 3.53, -16], ["tick", 3.75, -16], ["stamp", 4.1, -10],
+    ["page_turn", 4.8, -14], ["scribble", 5.0, -16], ["spark_snap", 5.55, -10], ["field_bloom", 6.0, -16],
+    ["page_turn", 7.2, -14], ["scan", 7.5, -14], ["glow_swell", 8.1, -14], ["pencil_circle", 8.5, -16], ["pencil_circle", 8.8, -16], ["pencil_circle", 9.1, -16],
+    ["page_turn", 9.6, -14], ["geiger_click", 9.95, -14], ["geiger_click", 10.4, -10], ["geiger_click", 10.85, -6], ["geiger_click", 11.3, -4], ["stamp", 10.8, -10],
+    ["page_turn", 12.2, -14], ["paper_land", 12.3, -14], ["paper_land", 12.5, -14], ["paper_land", 12.7, -14], ["stone_rumble", 13.2, -14], ["stamp", 13.2, -10],
+    ["page_turn", 14.6, -14], ["glass_set", 15.0, -14], ["pop", 15.4, -10], ["glow_swell", 16.0, -12], ["field_bloom", 16.6, -14], ["reveal", 16.1, -12],
+    ["page_turn", 17.8, -14], ["button_click", 18.4, -8]
   ]
 }

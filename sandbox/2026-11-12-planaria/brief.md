@@ -31,3 +31,9 @@ Four shots (hook, microscope, pieces, size) to approve the look: `look-test.jpg`
 | 12.9–15 | the worm glides | FOLLOW FOR / MORE FACTS |
 
 Sound: effects only (`audio.json`): page turns on cuts, pencil circles, snips, ticks on the counter, stamps.
+
+## Round 2 · 20 s demo
+
+hook (paper, caption) → regrow (under water, day counter) → pieces (paper) → scope (dark, hand-written
+«neoblasts») → geiger (paper) → dose (12 mannequins, caption «THAT'S 12X / A DEADLY DOSE») → rescue
+(dark: one cell) → follow (under water, caption). Props in `styles/cinematic-facts/props.js`.
