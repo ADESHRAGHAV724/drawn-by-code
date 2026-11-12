@@ -6,7 +6,8 @@ description: Cinematic-facts style, in testing: the documentary-explainer look o
 # Style · Cinematic facts
 
 In testing. Films: `sandbox/2026-11-12-jellyfish/` (10 s, the first test, before the kit) and
-`sandbox/2026-11-12-immortal-jellyfish/` (49 s, Turritopsis dohrnii, with the user's voice).
+`sandbox/2026-11-12-immortal-jellyfish/` (49 s, Turritopsis dohrnii, with the user's voice),
+`sandbox/2026-11-12-octopus/` (57 s, 22 fast cuts, x-ray insides, a molecule split screen).
 
 ## Code
 
@@ -40,3 +41,4 @@ In testing. Films: `sandbox/2026-11-12-jellyfish/` (10 s, the first test, before
 
 - 2026-11-12 · jellyfish · Live canvas blur on two far jellies and near particles cost ~4 s a frame at 1080 (15 min for 10 s). Pre-blurred sprites took the immortal-jellyfish Short (49 s, more going on) to ~2 s of render per second of film.
 - 2026-11-12 · immortal-jellyfish · Photo cutouts with a torn white edge read as collage, not cinema, in this style; the user preferred the subject painted in code after the photos (`turri.js`): a clear dome lit at its edges, a beaded bright rim, the red cross of the stomach glowing, a halo of curling tentacles.
+- 2026-11-12 · octopus · Fast cutting (a shot every 1.5–3 s) reads as energetic when each cut has a short white flash (~0.12 s) and a zoom punch that settles; declare every shot in `shots`, or review.mjs reports the cuts as jumps. Coloured lines over glows must be drawn opaque: additive blue on a glow sums to white.
