@@ -10,4 +10,4 @@
   out as triangles. → a rotated-ellipse helper.
 - South America read as a kite → a fuller outline and a label on it.
 - The bugs were dots → twice the size.
-- review.mjs: no warnings, no still stretches.
+- review.mjs: no warnings, no still stretches. Its contact sheet shows the photos, so it stays local (gitignored), like the render.
