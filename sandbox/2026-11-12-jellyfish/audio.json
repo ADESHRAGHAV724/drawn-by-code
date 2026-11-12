@@ -1,0 +1,12 @@
+{
+  "duration": 10,
+  "sfxDir": "../../assets/sfx",
+  "align": "onset",
+  "cues": [
+    ["cavity_hum", 0.0, -16],
+    ["glow_swell", 0.2, -14], ["pop", 0.25, -16],
+    ["glow_swell", 3.4, -14], ["pop", 3.45, -16],
+    ["glow_swell", 6.7, -14], ["pop", 6.75, -16],
+    ["cavity_hum", 5.0, -18]
+  ]
+}
