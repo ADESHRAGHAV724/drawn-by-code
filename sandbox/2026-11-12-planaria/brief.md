@@ -37,3 +37,22 @@ Sound: effects only (`audio.json`): page turns on cuts, pencil circles, snips, t
 hook (paper, caption) → regrow (under water, day counter) → pieces (paper) → scope (dark, hand-written
 «neoblasts») → geiger (paper) → dose (12 mannequins, caption «THAT'S 12X / A DEADLY DOSE») → rescue
 (dark: one cell) → follow (under water, caption). Props in `styles/cinematic-facts/props.js`.
+
+## Round 3 · the full Short on the voice (59.6 s)
+
+The user recorded the SHORT script (asked, not guessed: the pauses fit both). Lines mapped by
+silencedetect (-35 dB, 0.15 s), film time = voice + 0.4 s (`make-voice.sh`):
+
+| # | Line | Film time | Shots |
+|---|---|---|---|
+| 1 | सिर काट दो… नया सिर, दिमाग़, आँखें | 0.4–6.0 | hook (snip, caption) · regrow under water (DAY counter, «brain», «eyes») |
+| 2 | ये है प्लेनेरिया… दो सेंटीमीटर | 6.6–11.6 | intro under water («MEET THE PLANARIAN») · size (ruler, 2 CM callout) |
+| 3 | नियोब्लास्ट… स्टेम सेल्स… कोई भी अंग | 12.1–17.3 | scope (lit neoblasts) · stem (a cell → eye, brain, gut, muscle) |
+| 4 | टुकड़ों में काटो… 279वाँ हिस्सा | 17.9–23.9 | pieces (five, each grows a head) · tiny («EVEN A 1/279 PIECE», magnified sliver grows) |
+| 5 | सिर बीच से चीर दो… दो सिर | 24.5–28.4 | twohead under water |
+| 6 | चोट… मिनटों में घाव बंद | 29.0–31.5 | wound closing, stopwatch |
+| 7 | पीस दो… एक नियोब्लास्ट… बचा लिया | 32.1–39.5 | grind (mortar, red X) · geiger (why it is dying) · rescue (one cell) |
+| 8 | उम्र? कोई तय उम्र नहीं | 39.9–44.0 | age («AGE LIMIT? NONE», calendar 1990→2025, «same worm») |
+| 9 | रीग्रो कभी बंद नहीं… जवान | 44.5–50.3 | never (cut ×3, ∞) · younger (old → «young!») |
+| 10 | अमर नहीं… भूख, गर्मी, शिकारी | 50.8–55.6 | mortal («BUT NOT IMMORTAL», dish, thermometer, fish on the words) |
+| 11 | सब्सक्राइब | 56.1–58.3 | subscribe under water (a button pressed) |

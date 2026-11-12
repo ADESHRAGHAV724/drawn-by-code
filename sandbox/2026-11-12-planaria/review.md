@@ -29,3 +29,13 @@ Lessons that apply to other videos go up to the matching skill (see review/SKILL
   «×» is missing in Anton → «12X». review.mjs: no warnings.
 - Lesson: in a facts Short, tell with objects and keep text for the claim a picture can't carry
   (a number, a name).
+
+## Round 3 · the full Short
+
+- 18 shots on the voice; objects tell it, five captions in 60 s. review.mjs: no warnings.
+- Found: the demos had NO sound — `audio.mix` is resolved against the scene's folder, and I had
+  written the path from the repo root, so render.mjs silently skipped it. Now `mix: 'mix.wav'`;
+  the final MP4 was muxed with the mix and checked with ffprobe (an audio stream) and volumedetect.
+- By eye: five pieces ran off the right edge → shifted; the two heads splayed off the body →
+  smaller angle and offset, head ranges overlapping the neck.
+- Lesson: after every render, ffprobe the MP4 for an audio stream; a wrong mix path fails silently.

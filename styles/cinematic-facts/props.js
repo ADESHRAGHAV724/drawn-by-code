@@ -469,5 +469,383 @@ const Props = (() => {
         g.restore();
     }
 
-    return { greySprite, geiger, mannequin, squiggles, needle, cord };
+
+    // ---- a stone mortar and pestle (side view, the bowl's rim at y 0, ~360 wide) ----
+    function mortarSprite(env) {
+        return Motion.sprite('props:mortar', { x: -230, y: -60, w: 460, h: 330 }, env.k * 1.5, (c) => {
+            const r = Motion.rng('mortar');
+            c.save();
+            c.filter = `blur(${10 * env.k}px)`;
+            c.fillStyle = 'rgba(40,25,8,0.5)';
+            c.beginPath();
+            c.ellipse(14, 238, 190, 26, 0, 0, TAU);
+            c.fill();
+            c.restore();
+            // the bowl body
+            c.beginPath();
+            c.moveTo(-180, 0);
+            c.bezierCurveTo(-180, 150, -110, 220, -80, 232);
+            c.lineTo(80, 232);
+            c.bezierCurveTo(110, 220, 180, 150, 180, 0);
+            c.closePath();
+            const gr = c.createLinearGradient(-180, 0, 180, 0);
+            gr.addColorStop(0, '#a9a49b');
+            gr.addColorStop(0.35, '#d3cfc6');
+            gr.addColorStop(1, '#6f6b64');
+            c.fillStyle = gr;
+            c.fill();
+            // granite speckles
+            for (let i = 0; i < 700; i++) {
+                const x = (r() - 0.5) * 340, y = r() * 225;
+                if (Math.abs(x) > 180 - (y < 150 ? 0 : (y - 150) * 1.2)) continue;
+                c.fillStyle = r() < 0.5 ? 'rgba(40,38,35,0.35)' : 'rgba(255,255,250,0.35)';
+                c.fillRect(x, y, 1.5 + r() * 2, 1.5 + r() * 2);
+            }
+            // the foot
+            c.fillStyle = '#5f5b55';
+            c.fillRect(-90, 226, 180, 12);
+            // the mouth: a dark inside with a lit far wall
+            c.beginPath();
+            c.ellipse(0, 0, 180, 44, 0, 0, TAU);
+            c.fillStyle = '#8e8a82';
+            c.fill();
+            c.beginPath();
+            c.ellipse(0, 4, 160, 36, 0, 0, TAU);
+            const ig = c.createLinearGradient(0, -32, 0, 40);
+            ig.addColorStop(0, '#d6d2c9');
+            ig.addColorStop(0.6, '#5c5852');
+            ig.addColorStop(1, '#3a3732');
+            c.fillStyle = ig;
+            c.fill();
+            c.strokeStyle = 'rgba(255,255,255,0.5)';
+            c.lineWidth = 2;
+            c.beginPath();
+            c.ellipse(0, 0, 180, 44, 0, Math.PI * 0.05, Math.PI * 0.95);
+            c.stroke();
+        });
+    }
+    function pestleSprite(env) {
+        return Motion.sprite('props:pestle', { x: -40, y: -280, w: 80, h: 300 }, env.k * 1.5, (c) => {
+            c.beginPath();
+            c.moveTo(-16, -270);
+            c.quadraticCurveTo(-22, -100, -32, -20);
+            c.quadraticCurveTo(-30, 12, 0, 14);
+            c.quadraticCurveTo(30, 12, 32, -20);
+            c.quadraticCurveTo(22, -100, 16, -270);
+            c.quadraticCurveTo(0, -282, -16, -270);
+            const gr = c.createLinearGradient(-32, 0, 32, 0);
+            gr.addColorStop(0, '#b9b4ab');
+            gr.addColorStop(0.35, '#e4e0d8');
+            gr.addColorStop(1, '#6d6962');
+            c.fillStyle = gr;
+            c.fill();
+        });
+    }
+    /** The mortar at (x, y) (rim centre), scale s; `paste` 0–1 smears a brown paste inside; the pestle grinds when `grind` > 0. */
+    function mortar(g, env, t, x, y, s, o = {}) {
+        const { grind = 0, paste = 0, back } = o;
+        g.save();
+        g.translate(x, y);
+        g.scale(s, s);
+        mortarSprite(env).draw(g);
+        if (back) back(g);
+        if (paste > 0) {
+            g.save();
+            g.beginPath();
+            g.ellipse(0, 4, 158, 34, 0, 0, TAU);
+            g.clip();
+            g.fillStyle = `rgba(92,62,36,${0.85 * paste})`;
+            g.beginPath();
+            g.ellipse(0, 22, 110 * paste + 20, 16, 0, 0, TAU);
+            g.fill();
+            g.fillStyle = `rgba(140,105,70,${0.6 * paste})`;
+            g.beginPath();
+            g.ellipse(-20, 16, 50 * paste, 6, 0, 0, TAU);
+            g.fill();
+            g.restore();
+        }
+        // the pestle, leaning in, circling as it grinds
+        const a = t * 9 * grind;
+        g.save();
+        g.translate(Math.cos(a) * 60 * grind + 30, 18 + Math.sin(a) * 10 * grind);
+        g.rotate(0.45 + Math.sin(a) * 0.08 * grind);
+        pestleSprite(env).draw(g);
+        g.restore();
+        g.restore();
+    }
+
+    // ---- a stopwatch (face r 110 at the origin); `turns` spins the hand -------------
+    function stopwatch(g, env, x, y, s, turns) {
+        g.save();
+        g.translate(x, y);
+        g.scale(s, s);
+        const sp = Motion.sprite('props:stopwatch', { x: -150, y: -200, w: 300, h: 360 }, env.k * 1.5, (c) => {
+            c.save();
+            c.filter = `blur(${10 * env.k}px)`;
+            c.fillStyle = 'rgba(40,25,8,0.5)';
+            c.beginPath();
+            c.arc(10, 16, 125, 0, TAU);
+            c.fill();
+            c.restore();
+            const mg = (x0, y0, r0) => {
+                const gr = c.createLinearGradient(x0 - r0, y0 - r0, x0 + r0, y0 + r0);
+                gr.addColorStop(0, '#f2f2ef');
+                gr.addColorStop(0.5, '#a3a3a0');
+                gr.addColorStop(1, '#4e4e4b');
+                return gr;
+            };
+            c.fillStyle = mg(0, -150, 22);
+            rrect(c, -18, -172, 36, 40, 6);
+            c.fill();
+            c.fillStyle = mg(0, -186, 30);
+            rrect(c, -30, -194, 60, 22, 8);
+            c.fill();
+            c.fillStyle = mg(0, 0, 125);
+            c.beginPath();
+            c.arc(0, 0, 125, 0, TAU);
+            c.fill();
+            const fg = c.createRadialGradient(-30, -40, 10, 0, 0, 110);
+            fg.addColorStop(0, '#fbf8ef');
+            fg.addColorStop(1, '#ddd6c4');
+            c.fillStyle = fg;
+            c.beginPath();
+            c.arc(0, 0, 108, 0, TAU);
+            c.fill();
+            for (let i = 0; i < 60; i++) {
+                const a = (i / 60) * TAU, L = i % 5 ? 7 : 16;
+                c.strokeStyle = '#2b2620';
+                c.lineWidth = i % 5 ? 1.2 : 2.6;
+                c.beginPath();
+                c.moveTo(Math.cos(a) * 100, Math.sin(a) * 100);
+                c.lineTo(Math.cos(a) * (100 - L), Math.sin(a) * (100 - L));
+                c.stroke();
+            }
+            c.font = '20px "Space Mono"';
+            c.fillStyle = '#2b2620';
+            c.textAlign = 'center';
+            c.fillText('MIN', 0, 48);
+        });
+        sp.draw(g);
+        const a = -Math.PI / 2 + turns * TAU;
+        g.strokeStyle = '#b0301e';
+        g.lineWidth = 4;
+        g.lineCap = 'round';
+        g.beginPath();
+        g.moveTo(-Math.cos(a) * 18, -Math.sin(a) * 18);
+        g.lineTo(Math.cos(a) * 92, Math.sin(a) * 92);
+        g.stroke();
+        g.fillStyle = '#b0301e';
+        g.beginPath();
+        g.arc(0, 0, 8, 0, TAU);
+        g.fill();
+        // glass glint
+        g.fillStyle = 'rgba(255,255,255,0.25)';
+        g.beginPath();
+        g.ellipse(-40, -50, 40, 18, -0.6, 0, TAU);
+        g.fill();
+        g.restore();
+    }
+
+    // ---- a tear-off calendar block showing `label` (a year), pages flying off -------
+    function calendar(g, env, t, x, y, s, label, flip = 0) {
+        g.save();
+        g.translate(x, y);
+        g.scale(s, s);
+        const W = 300, H = 330;
+        const pad = Motion.sprite('props:calendar', { x: -190, y: -200, w: 380, h: 400 }, env.k * 1.5, (c) => {
+            c.save();
+            c.filter = `blur(${10 * env.k}px)`;
+            c.fillStyle = 'rgba(40,25,8,0.5)';
+            c.fillRect(-W / 2 + 12, -H / 2 + 18, W, H);
+            c.restore();
+            for (let k = 5; k >= 0; k--) {
+                c.fillStyle = k ? '#e6dfcf' : '#f6f1e4';
+                c.fillRect(-W / 2 + k * 1.5, -H / 2 + 40 + k * 2, W, H - 40);
+                c.strokeStyle = 'rgba(80,60,40,0.25)';
+                c.strokeRect(-W / 2 + k * 1.5, -H / 2 + 40 + k * 2, W, H - 40);
+            }
+            c.fillStyle = '#b0301e';
+            c.fillRect(-W / 2, -H / 2, W, 60);
+            c.fillStyle = '#2a1c12';
+            for (const dx of [-80, 80]) {
+                c.beginPath();
+                c.arc(dx, -H / 2 + 14, 9, 0, TAU);
+                c.fill();
+            }
+            c.font = '22px "Space Mono"';
+            c.fillStyle = '#f6f1e4';
+            c.textAlign = 'center';
+            c.fillText('Y E A R', 0, -H / 2 + 44);
+        });
+        pad.draw(g);
+        g.font = '128px "Anton"';
+        g.fillStyle = '#2a1c12';
+        g.textAlign = 'center';
+        g.fillText(label, 0, 90);
+        // the page that just came off, flying up and away
+        if (flip > 0 && flip < 1) {
+            g.save();
+            g.translate(flip * 260, -flip * 320);
+            g.rotate(flip * 0.9);
+            g.globalAlpha = 0.9 * (1 - flip);
+            g.scale(0.8, 0.8);
+            g.fillStyle = '#f6f1e4';
+            g.fillRect(-W / 2, -H / 2 + 60, W, H - 60);
+            g.restore();
+        }
+        g.restore();
+    }
+
+    // ---- small things for cards: a glass dish, a thermometer, a fish --------------
+    function dish(g, x, y, s) {
+        g.save();
+        g.translate(x, y);
+        g.scale(s, s);
+        g.fillStyle = 'rgba(40,25,8,0.25)';
+        g.beginPath();
+        g.ellipse(6, 14, 110, 34, 0, 0, TAU);
+        g.fill();
+        g.fillStyle = 'rgba(230,240,240,0.35)';
+        g.strokeStyle = 'rgba(255,255,255,0.8)';
+        g.lineWidth = 3;
+        g.beginPath();
+        g.ellipse(0, 0, 105, 32, 0, 0, TAU);
+        g.fill();
+        g.stroke();
+        g.strokeStyle = 'rgba(60,70,70,0.4)';
+        g.lineWidth = 1.5;
+        g.beginPath();
+        g.ellipse(0, 8, 92, 24, 0, 0, Math.PI);
+        g.stroke();
+        g.restore();
+    }
+    function thermometer(g, x, y, s, level) {
+        g.save();
+        g.translate(x, y);
+        g.scale(s, s);
+        g.fillStyle = 'rgba(240,245,245,0.85)';
+        rrect(g, -16, -150, 32, 220, 16);
+        g.fill();
+        g.beginPath();
+        g.arc(0, 90, 34, 0, TAU);
+        g.fill();
+        g.strokeStyle = 'rgba(60,60,60,0.5)';
+        g.lineWidth = 2;
+        rrect(g, -16, -150, 32, 220, 16);
+        g.stroke();
+        g.fillStyle = '#d0341f';
+        g.beginPath();
+        g.arc(0, 90, 24, 0, TAU);
+        g.fill();
+        const top = 60 - 190 * level;
+        g.fillRect(-7, top, 14, 90 - top);
+        for (let i = 0; i < 9; i++) {
+            g.fillStyle = 'rgba(40,30,20,0.7)';
+            g.fillRect(16, -130 + i * 22, i % 2 ? 8 : 14, 2);
+        }
+        g.fillStyle = 'rgba(255,255,255,0.6)';
+        g.fillRect(-11, -140, 4, 190);
+        g.restore();
+    }
+    function fish(g, x, y, s, t = 0) {
+        g.save();
+        g.translate(x, y);
+        g.scale(s, s);
+        const w = Math.sin(t * 6) * 0.15;
+        g.fillStyle = 'rgba(40,25,8,0.25)';
+        g.beginPath();
+        g.ellipse(10, 60, 120, 14, 0, 0, TAU);
+        g.fill();
+        // tail
+        g.save();
+        g.translate(-95, 0);
+        g.rotate(w);
+        g.fillStyle = '#5d7480';
+        g.beginPath();
+        g.moveTo(0, 0);
+        g.lineTo(-60, -45);
+        g.quadraticCurveTo(-40, 0, -60, 45);
+        g.closePath();
+        g.fill();
+        g.restore();
+        const gr = g.createLinearGradient(0, -50, 0, 50);
+        gr.addColorStop(0, '#4f6672');
+        gr.addColorStop(0.55, '#9fb4b8');
+        gr.addColorStop(1, '#e4e8e0');
+        g.fillStyle = gr;
+        g.beginPath();
+        g.moveTo(-100, 0);
+        g.bezierCurveTo(-60, -60, 60, -62, 120, -6);
+        g.quadraticCurveTo(128, 6, 112, 14);
+        g.bezierCurveTo(60, 56, -60, 50, -100, 0);
+        g.fill();
+        // fins, gill, eye, mouth open (a predator)
+        g.fillStyle = '#4a606b';
+        g.beginPath();
+        g.moveTo(-10, -48);
+        g.lineTo(30, -82);
+        g.lineTo(50, -50);
+        g.closePath();
+        g.fill();
+        g.strokeStyle = 'rgba(40,50,55,0.6)';
+        g.lineWidth = 3;
+        g.beginPath();
+        g.arc(60, 0, 34, -1.2, 1.2);
+        g.stroke();
+        g.fillStyle = '#f4f1e6';
+        g.beginPath();
+        g.arc(92, -16, 11, 0, TAU);
+        g.fill();
+        g.fillStyle = '#111';
+        g.beginPath();
+        g.arc(95, -16, 6, 0, TAU);
+        g.fill();
+        g.strokeStyle = '#2a2020';
+        g.lineWidth = 3;
+        g.beginPath();
+        g.moveTo(124, 2);
+        g.lineTo(102, 8);
+        g.stroke();
+        g.restore();
+    }
+
+    // ---- a generic red subscribe button with a bell; `press` 0–1 ------------------
+    function subscribe(g, x, y, s, press, done) {
+        g.save();
+        g.translate(x, y);
+        const k = s * (1 - 0.08 * Math.sin(Math.PI * Math.min(1, press)));
+        g.scale(k, k);
+        g.fillStyle = 'rgba(30,10,5,0.35)';
+        rrect(g, -250 + 8, -60 + 14, 500, 120, 60);
+        g.fill();
+        g.fillStyle = done ? '#6b6560' : '#c7271c';
+        rrect(g, -250, -60, 500, 120, 60);
+        g.fill();
+        g.fillStyle = 'rgba(255,255,255,0.18)';
+        rrect(g, -236, -54, 472, 50, 40);
+        g.fill();
+        g.font = '64px "Anton"';
+        g.fillStyle = '#fff';
+        g.textAlign = 'center';
+        g.textBaseline = 'middle';
+        g.fillText(done ? 'SUBSCRIBED' : 'SUBSCRIBE', -20, 4);
+        // the bell
+        g.translate(190, 0);
+        g.rotate(done ? Math.sin(press * 30) * 0.3 * Math.max(0, 1.6 - press) : 0);
+        g.fillStyle = '#fff';
+        g.beginPath();
+        g.moveTo(-20, 16);
+        g.quadraticCurveTo(-20, -24, 0, -26);
+        g.quadraticCurveTo(20, -24, 20, 16);
+        g.lineTo(26, 22);
+        g.lineTo(-26, 22);
+        g.closePath();
+        g.fill();
+        g.beginPath();
+        g.arc(0, 28, 6, 0, TAU);
+        g.fill();
+        g.restore();
+    }
+
+    return { mortar, stopwatch, calendar, dish, thermometer, fish, subscribe, greySprite, geiger, mannequin, squiggles, needle, cord };
 })();

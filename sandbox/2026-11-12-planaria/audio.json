@@ -1,15 +1,25 @@
 {
-  "duration": 20,
+  "music": "private/voice.wav",
+  "musicDb": 0,
+  "duration": 59.6,
   "sfxDir": "../../assets/sfx",
   "align": "onset",
   "cues": [
-    ["cavity_hum", 0.0, -26], ["pencil_circle", 0.7, -14], ["spark_snap", 1.35, -10],
-    ["page_turn", 2.4, -14], ["tick", 2.65, -16], ["tick", 2.87, -16], ["tick", 3.09, -16], ["tick", 3.31, -16], ["tick", 3.53, -16], ["tick", 3.75, -16], ["stamp", 4.1, -10],
-    ["page_turn", 4.8, -14], ["scribble", 5.0, -16], ["spark_snap", 5.55, -10], ["field_bloom", 6.0, -16],
-    ["page_turn", 7.2, -14], ["scan", 7.5, -14], ["glow_swell", 8.1, -14], ["pencil_circle", 8.5, -16], ["pencil_circle", 8.8, -16], ["pencil_circle", 9.1, -16],
-    ["page_turn", 9.6, -14], ["geiger_click", 9.95, -14], ["geiger_click", 10.4, -10], ["geiger_click", 10.85, -6], ["geiger_click", 11.3, -4], ["stamp", 10.8, -10],
-    ["page_turn", 12.2, -14], ["paper_land", 12.3, -14], ["paper_land", 12.5, -14], ["paper_land", 12.7, -14], ["stone_rumble", 13.2, -14], ["stamp", 13.2, -10],
-    ["page_turn", 14.6, -14], ["glass_set", 15.0, -14], ["pop", 15.4, -10], ["glow_swell", 16.0, -12], ["field_bloom", 16.6, -14], ["reveal", 16.1, -12],
-    ["page_turn", 17.8, -14], ["button_click", 18.4, -8]
+    ["cavity_hum", 0.0, -28], ["pencil_circle", 0.4, -20], ["spark_snap", 1.1, -14],
+    ["swoosh_in", 2.1, -20], ["tick", 2.6, -22], ["tick", 2.9, -22], ["tick", 3.2, -22], ["tick", 3.5, -22], ["tick", 3.8, -22], ["tick", 4.1, -22], ["stamp", 4.4, -16],
+    ["swoosh_in", 6.3, -20], ["page_turn", 9.4, -20], ["pop", 9.9, -18],
+    ["page_turn", 12.0, -20], ["glow_swell", 12.8, -18], ["pop", 14.4, -16], ["pencil_circle", 15.5, -22], ["pop", 15.7, -20], ["pop", 16.05, -20], ["pop", 16.4, -20], ["pop", 16.75, -20],
+    ["page_turn", 17.6, -20], ["spark_snap", 17.9, -16], ["spark_snap", 18.05, -16], ["spark_snap", 18.2, -16], ["spark_snap", 18.35, -16], ["field_bloom", 19.3, -20],
+    ["page_turn", 21.7, -20], ["pop", 22.0, -18],
+    ["swoosh_in", 24.3, -20], ["scribble", 24.55, -20], ["spark_snap", 25.8, -16],
+    ["page_turn", 28.7, -20], ["tick", 29.6, -22], ["tick", 29.9, -22], ["tick", 30.2, -22], ["tick", 30.5, -22], ["chime_ok", 31.2, -18],
+    ["page_turn", 31.8, -20], ["stone_shift", 32.15, -14], ["stamp", 33.15, -12],
+    ["geiger_click", 34.6, -16], ["geiger_click", 35.0, -12],
+    ["page_turn", 35.9, -20], ["glass_set", 36.0, -18], ["pop", 36.35, -14], ["glow_swell", 37.4, -16], ["reveal", 38.4, -16],
+    ["page_turn", 39.9, -20], ["page_flips", 41.1, -18], ["stamp", 41.1, -14],
+    ["page_turn", 44.3, -20], ["spark_snap", 44.4, -18], ["spark_snap", 45.05, -18], ["spark_snap", 45.7, -18], ["pencil_circle", 46.35, -18],
+    ["page_turn", 47.2, -20], ["spark_snap", 47.65, -16], ["field_bloom", 48.9, -18], ["boing", 49.2, -20],
+    ["page_turn", 50.6, -20], ["stamp", 51.0, -14], ["paper_land", 52.35, -16], ["paper_land", 53.05, -16], ["paper_land", 53.85, -16],
+    ["swoosh_in", 56.0, -20], ["pop", 56.2, -18], ["button_click", 57.0, -10]
   ]
 }
