@@ -41,7 +41,7 @@ Motion.scene({
             [31.2, { x: OX, y: 900, z: 0.95 }, { swim: 1 }, 'ink'],
             [33.7, { x: OX, y: at(0, 0.1)[1], z: 1.5 }, X({ show: { beak: 1 } })],
             [36.6, { x: OX, y: 960, z: 1.0 }, null, 'squeeze'],
-            [40.7, { x: OX, y: 960, z: 1.0 }, null, 'jar'],
+            [40.7, { x: OX, y: 930, z: 1.45 }, null, 'jar'],
             [44.7, { x: OX, y: 960, z: 1.0 }, null, 'puzzle'],
             [46.9, { x: stump[0] - 80, y: stump[1] - 80, z: 1.6 }, { cut: { 6: 0.45 } }, 'stump'],
             [49.2, { x: stump[0] - 20, y: stump[1] - 40, z: 1.25 }, { cut: { 6: lerp(0.45, 1, E.out(seg(49.4, 51.4))) } }, 'regrow'],
@@ -178,45 +178,99 @@ Motion.scene({
             g.fillText('HOLE ≈ BEAK', hx, hy + 110);
         }
         if (extra === 'jar') {
-            // a glass jar with a crab inside; an arm twists the lid off
-            const jx = 520, jy = 1000, open = E.out(seg(43.6, 44.3));
-            Octo.draw(g, env, 230, 880, 190, { t, look: [1, 0.3] });
+            // the octopus INSIDE a glass jar opens the lid from within: it looks up, its arms
+            // reach up and twist the lid, the lid pops off spinning, and it peeks out happily
+            const jx = 450, jy = 1010, JW = 300, JH = 420;
+            const twist = seg(41.3, 43.6), pop = E.out(seg(43.6, 44.1)), peek = E.back(seg(44.0, 44.6));
+            const top = jy - JH / 2;
+            // the back of the glass
+            g.fillStyle = 'rgba(160,210,255,0.10)';
+            g.beginPath();
+            g.roundRect(jx - JW / 2, top, JW, JH, 40);
+            g.fill();
+            // the octopus, sitting on the bottom, then rising to peek out
+            const oy = lerp(jy + 80, top - 10, peek), wob = Math.sin(t * 9) * 0.04 * (twist > 0 && twist < 1 ? 1 : 0);
+            // it stays inside the glass: clip to the jar, and to the open mouth above it
             g.save();
-            g.fillStyle = 'rgba(180,220,255,0.12)';
-            g.strokeStyle = 'rgba(220,240,255,0.7)';
+            g.beginPath();
+            g.roundRect(jx - JW / 2 + 6, top - 700, JW - 12, JH + 694, 34);
+            g.clip();
+            // arms reaching up to the underside of the lid, gripping it (until it pops); drawn first, behind the body
+            if (pop < 1) {
+                for (const [sx, ph] of [[-1, 0], [1, 1.3], [-0.4, 2.2]]) {
+                    const reach = E.out(seg(40.9, 41.5));
+                    const end = [jx + sx * 95 + Math.sin(twist * 12 + ph) * 18, lerp(oy, top + 14, reach)];
+                    const ribbon = new Path2D(), from = [jx + sx * 30, oy + 30];
+                    const mid = [jx + sx * 120, (from[1] + end[1]) / 2];
+                    g.strokeStyle = 'hsl(14,70%,50%)';
+                    g.lineWidth = 20;
+                    g.lineCap = 'round';
+                    g.beginPath();
+                    g.moveTo(from[0], from[1]);
+                    g.quadraticCurveTo(mid[0], mid[1], end[0], end[1]);
+                    g.stroke();
+                    g.fillStyle = 'hsla(14,70%,82%,0.95)';
+                    for (let k = 1; k < 6; k++) {
+                        const u = k / 6, px = (1 - u) ** 2 * from[0] + 2 * (1 - u) * u * mid[0] + u * u * end[0], py = (1 - u) ** 2 * from[1] + 2 * (1 - u) * u * mid[1] + u * u * end[1];
+                        g.beginPath();
+                        g.arc(px - sx * 6, py, 4.5, 0, TAU);
+                        g.fill();
+                    }
+                    void ribbon;
+                }
+            }
+            // the body in front of its reaching arms, so the face stays clear
+            Octo.draw(g, env, jx, oy, 150, { t, cute: true, look: [0, twist < 1 ? -1 : 0.2], spread: 0.75, curl: 1.4, rot: wob });
+            g.restore();
+            // the front of the glass: rim, highlights
+            g.strokeStyle = 'rgba(220,240,255,0.75)';
             g.lineWidth = 5;
             g.beginPath();
-            g.roundRect(jx - 110, jy - 150, 220, 300, 30);
-            g.fill();
+            g.roundRect(jx - JW / 2, top, JW, JH, 40);
             g.stroke();
-            g.fillStyle = '#d24a3a';
+            g.fillStyle = 'rgba(255,255,255,0.18)';
             g.beginPath();
-            g.ellipse(jx, jy + 90, 46, 28, 0, Math.PI, TAU);
+            g.roundRect(jx - JW / 2 + 22, top + 40, 22, JH - 90, 11);
             g.fill();
-            g.fillRect(jx - 50, jy + 88, 100, 6);
-            // the lid, twisting (its ridges slide), then lifting off
-            g.translate(jx, jy - 165 - open * 160);
-            g.rotate(open * 0.8);
+            g.fillStyle = 'rgba(200,230,255,0.08)';
+            g.beginPath();
+            g.roundRect(jx - JW / 2, top, JW, JH, 40);
+            g.fill();
+            // the lid: turning (its ridges slide, it wobbles), then popping off and spinning away
+            g.save();
+            g.translate(jx + pop * 180, top - 14 - pop * 380 + pop * pop * 120);
+            g.rotate(pop * 2.6 + Math.sin(twist * 30) * 0.03 * (pop > 0 ? 0 : 1));
             g.fillStyle = '#c9ccd2';
-            g.fillRect(-120, -22, 240, 44);
+            g.beginPath();
+            g.roundRect(-JW / 2 - 12, -24, JW + 24, 48, 10);
+            g.fill();
             g.strokeStyle = '#7d828b';
             g.lineWidth = 3;
-            for (let i = 0; i < 12; i++) {
-                const xx = -110 + ((i * 20 + t * 140) % 220);
+            for (let i = 0; i < 14; i++) {
+                const xx = -JW / 2 + ((i * 24 + twist * 400) % (JW + 10));
                 g.beginPath();
-                g.moveTo(xx, -22);
-                g.lineTo(xx, 22);
+                g.moveTo(xx, -24);
+                g.lineTo(xx, 24);
                 g.stroke();
             }
             g.restore();
-            // the arm wrapped round the lid
-            g.strokeStyle = 'hsl(14,72%,45%)';
-            g.lineWidth = 22;
-            g.lineCap = 'round';
-            g.beginPath();
-            g.moveTo(260, 960);
-            g.quadraticCurveTo(380, 780 - open * 120, jx - 60, jy - 170 - open * 160);
-            g.stroke();
+            // little twist arrows while it works, a burst of bubbles when the lid pops
+            if (twist > 0 && twist < 1) {
+                g.strokeStyle = 'rgba(255,220,120,0.9)';
+                g.lineWidth = 6;
+                g.beginPath();
+                g.arc(jx, top - 14, JW * 0.62, Math.PI * 1.15 + twist * 2, Math.PI * 1.45 + twist * 2);
+                g.stroke();
+            }
+            if (pop > 0 && pop < 1)
+                for (let i = 0; i < 12; i++) {
+                    const a = -Math.PI / 2 + (i / 11 - 0.5) * 2.2, d = pop * 160;
+                    g.strokeStyle = `rgba(220,240,255,${1 - pop})`;
+                    g.lineWidth = 3;
+                    g.beginPath();
+                    g.arc(jx + Math.cos(a) * d, top + Math.sin(a) * d, 8 + i % 3 * 4, 0, TAU);
+                    g.stroke();
+                }
         }
         if (extra === 'puzzle') {
             // a latched box: the arm slides the bolt, the lid opens, a shell inside

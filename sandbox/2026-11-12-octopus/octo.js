@@ -128,7 +128,39 @@ const Octo = (() => {
             }
             g.restore();
         }
+        // cute: big round eyes with two glints, pink cheeks, a little smile
+        if (o.cute) {
+            for (const sx of [-1, 1]) {
+                const ex = sx * 0.2, ey = -0.04;
+                g.fillStyle = '#ffffff';
+                g.beginPath();
+                g.ellipse(ex, ey, 0.13, 0.14, 0, 0, TAU);
+                g.fill();
+                g.fillStyle = '#1a1220';
+                g.beginPath();
+                g.ellipse(ex + look[0] * 0.035, ey + look[1] * 0.035, 0.085, 0.095, 0, 0, TAU);
+                g.fill();
+                g.fillStyle = '#ffffff';
+                g.beginPath();
+                g.arc(ex + look[0] * 0.035 - 0.03, ey + look[1] * 0.035 - 0.035, 0.03, 0, TAU);
+                g.fill();
+                g.beginPath();
+                g.arc(ex + look[0] * 0.035 + 0.025, ey + look[1] * 0.035 + 0.03, 0.013, 0, TAU);
+                g.fill();
+                g.fillStyle = 'rgba(255,120,150,0.55)';
+                g.beginPath();
+                g.ellipse(sx * 0.3, 0.13, 0.065, 0.035, 0, 0, TAU);
+                g.fill();
+            }
+            g.strokeStyle = '#5a1a1a';
+            g.lineWidth = 0.022;
+            g.lineCap = 'round';
+            g.beginPath();
+            g.arc(0, 0.12, 0.06, 0.15 * Math.PI, 0.85 * Math.PI);
+            g.stroke();
+        }
         // eyes: bulging, a slit pupil, a glint
+        if (!o.cute)
         for (const sx of [-1, 1]) {
             const ex = sx * 0.24, ey = -0.02;
             g.fillStyle = skin(66);
