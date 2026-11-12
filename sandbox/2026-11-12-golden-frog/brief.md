@@ -16,8 +16,9 @@
   the Emberá of Colombia rub dart tips on its back; it lives only in the Pacific coast
   rainforests of Colombia; the poison comes from its wild diet, so captive frogs are not
   toxic.
-- **On screen:** a forest in paper (trunks, big leaves, vines, grass, fallen leaves); no
-  subtitles, only key words on torn paper strips (Hindi in Kalam, whole strings).
+- **On screen:** a forest in paper (trees with brown trunks and leafy crowns, big leaves,
+  vines, ferns, bushes, flowers, grass, fallen leaves); no subtitles, only key words in
+  English (the user's round-2 ask) on torn paper strips.
 
 ## Voice lines (film time)
 

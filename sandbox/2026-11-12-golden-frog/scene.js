@@ -52,9 +52,18 @@ Motion.scene({
         // --- the forest: dark green ground, trunks, big leaves, vines, grass (cached) -------
         kit.paperBg(g, 'forest', GREEN);
         kit.sprite('forest-back', { x: -40, y: -40, w: W + 80, h: H + 80 }, (c) => {
-            // distant trunks
-            [[90, 70, '#1f3d27'], [330, 50, '#28492f'], [600, 80, '#1f3d27'], [800, 60, '#28492f']].forEach(([x, w, col], i) =>
-                P.cutout(c, [[x - w / 2, -40], [x + w / 2, -40], [x + w / 2 + 10, H + 40], [x - w / 2 - 10, H + 40]], col, 'trunk' + i, { border: 0, shadow: 0.12 }));
+            // distant trees: muted trunks with round leafy crowns, in two depths
+            const tree = (x, top, w, trunkCol, crownCol, seed, crownR) => {
+                P.cutout(c, [[x - w / 2, top + 40], [x + w / 2, top + 40], [x + w / 2 + 14, 1320], [x - w / 2 - 14, 1320]], trunkCol, seed + 't', { border: 2, shadow: 0.18 });
+                for (const s2 of [-1, 1]) P.cutout(c, P.noodle([[x, top + 260], [x + s2 * 60, top + 180], [x + s2 * 110, top + 120]], w * 0.32, w * 0.12), trunkCol, seed + 'br' + s2, { border: 0, shadow: 0.1 });
+                const r = Motion.rng(seed);
+                const blobs = Array.from({ length: 7 }, () => [x + (r() - 0.5) * crownR * 2.2, top + (r() - 0.5) * crownR * 0.9, crownR * (0.45 + r() * 0.3)]);
+                P.cutout(c, P.circleUnion(blobs), crownCol, seed + 'c', { border: 2.5, shadow: 0.2 });
+            };
+            tree(330, 160, 46, '#4a3a2c', '#3f7a4a', 'far1', 170);
+            tree(620, 120, 50, '#4a3a2c', '#44824f', 'far2', 180);
+            tree(80, 220, 70, '#5a4330', '#357042', 'mid1', 210);
+            tree(830, 180, 74, '#5a4330', '#357042', 'mid2', 220);
             // a glow of light between the trees
             c.fillStyle = 'rgba(200,230,150,0.10)';
             c.beginPath();
@@ -120,6 +129,42 @@ Motion.scene({
                 P.cutout(c, ellR(x, y, 34 + r() * 20, 14 + r() * 6, a), ['#8a5a2b', '#a8743a', '#6f4a24'][i % 3], 'fl' + i, { border: 2, shadow: 0.2 });
             }
         }).draw(g);
+        // plants on the forest floor: ferns, bushes and flowers at the sides (cached)
+        kit.sprite('plants', { x: -60, y: 1000, w: W + 120, h: 400 }, (c) => {
+            const fern = (x, y, len, ang, seed) => {
+                const tip = [x + Math.cos(ang) * len, y + Math.sin(ang) * len], mid = [x + Math.cos(ang) * len * 0.5 + 10, y + Math.sin(ang) * len * 0.5 - 10];
+                P.cutout(c, P.noodle([[x, y], mid, tip], 5, 2), LEAF_D, seed + 's', { border: 2, shadow: 0.15 });
+                for (let k = 1; k < 9; k++) {
+                    const u = k / 9, px = x + (tip[0] - x) * u, py = y + (tip[1] - y) * u, l = 34 * (1 - u * 0.7);
+                    for (const s2 of [-1, 1]) {
+                        const a2 = ang + s2 * 1.1;
+                        const cx = px + Math.cos(a2) * l * 0.5, cy = py + Math.sin(a2) * l * 0.5;
+                        P.cutout(c, ellR(cx, cy, l * 0.55, l * 0.18, a2), k % 2 ? LEAF : LEAF_L, seed + k + s2, { border: 1.5, shadow: 0.1 });
+                    }
+                }
+            };
+            const bush = (x, y, r, col, seed) => P.cutout(c, P.circleUnion([[x - r * 0.7, y, r * 0.7], [x, y - r * 0.4, r * 0.85], [x + r * 0.7, y, r * 0.7]]), col, seed, { border: 3, shadow: 0.2 });
+            const flower = (x, y, col, seed) => {
+                P.cutout(c, P.noodle([[x, y + 70], [x + 6, y + 30], [x, y]], 4), LEAF_D, seed + 'st', { border: 1.5, shadow: 0.1 });
+                for (let k = 0; k < 5; k++) {
+                    const a2 = (k / 5) * Math.PI * 2;
+                    P.cutout(c, ellR(x + Math.cos(a2) * 13, y + Math.sin(a2) * 13, 12, 7, a2), col, seed + 'p' + k, { border: 1.5, shadow: 0.12 });
+                }
+                P.cutout(c, P.ellipse(x, y, 7, 7), '#f2c94c', seed + 'c', { border: 1.5, shadow: 0.1 });
+            };
+            bush(60, 1260, 120, LEAF_D, 'bushL');
+            bush(840, 1250, 130, LEAF_D, 'bushR');
+            fern(20, 1290, 220, -1.1, 'fernL1');
+            fern(150, 1300, 200, -1.6, 'fernL2');
+            fern(880, 1290, 220, -2.0, 'fernR1');
+            fern(760, 1300, 190, -1.5, 'fernR2');
+            flower(200, 1200, '#ee6b9b', 'fl1');
+            flower(250, 1230, '#e7473c', 'fl2');
+            flower(690, 1210, '#ee6b9b', 'fl3');
+            flower(640, 1240, '#f2643c', 'fl4');
+            bush(450, 1300, 90, '#356b3f', 'bushC');
+        }).draw(g);
+
         // grass blades in front, swaying
         for (let i = 0; i < 22; i++) {
             const x = -20 + i * 44, h = 90 + (i % 4) * 30, sw = Math.sin(t * 1.6 + i) * 6;
@@ -219,7 +264,7 @@ Motion.scene({
                 }).draw(g);
                 g.restore();
             }
-            word(hi, 'छूना भी खतरनाक!', 450, 1240, 76, C.cream, 0.9);
+            word(kit, 'Touching it can kill!', 450, 1240, 70, C.cream, 0.9);
         }
 
         // --- 2 · meet the frog: side cutout, the name, a ruler: 5 cm --------------------------
@@ -247,7 +292,7 @@ Motion.scene({
                 g.fillStyle = C.red;
                 g.fillRect(-220, 18, 440 * ru, 10);
                 g.restore();
-                word(hi, 'सिर्फ़ 5 सेंटीमीटर', 450, 1250, 64, C.cream, 6.5);
+                word(kit, 'Only 5 cm long', 450, 1250, 64, C.cream, 6.5);
             }
         }
 
@@ -293,14 +338,14 @@ Motion.scene({
                 }).draw(g);
                 g.restore();
             }
-            word(hi, '= 10 इंसान!', 450, 1290, 78, '#ffd36b', 10.2, C.red);
+            word(kit, '= 10 people!', 450, 1290, 78, '#ffd36b', 10.2, C.red);
         }
 
         // --- 4 · darts: the leaves cutout, a dart rubbed along its back, then shot -------------
         if (between(13.4, 18.75)) {
             const u = pop(13.6, 0.45), out = E.in(seg(18.4, 18.7));
             frog('leaves', 450 + out * -1200, 820, 1.35 * breath, 0);
-            word(hi, 'कोलंबिया के आदिवासी', 450, 330, 58, C.cream, 13.9);
+            word(kit, "Colombia's tribes", 450, 330, 66, C.cream, 13.9);
             // the dart: rubbed back and forth over the back (15.2–17.2), then it flies
             const rub = between(15.2, 17.3) ? Math.sin((tt - 15.2) * 9) * 60 : 0;
             const fly = E.in(seg(17.4, 18.0));
@@ -323,7 +368,7 @@ Motion.scene({
                 }
                 g.restore();
             }
-            word(hi, 'ज़हरीले तीर', 450, 1250, 72, '#9be37a', 16.0);
+            word(kit, 'Poison darts', 450, 1250, 72, '#9be37a', 16.0);
         }
 
         // --- 5 · Colombia: a paper map of South America, a pin drops ---------------------------
@@ -350,15 +395,15 @@ Motion.scene({
             }
             if (u > 0.9) {
                 g.save();
-                g.font = '44px "Kalam"';
+                g.font = '46px "Hand"';
                 g.textAlign = 'center';
                 g.fillStyle = 'rgba(42,24,38,0.75)';
-                g.fillText('दक्षिण', 470, 880);
-                g.fillText('अमेरिका', 470, 930);
+                g.fillText('South', 470, 880);
+                g.fillText('America', 470, 930);
                 g.restore();
             }
             word(kit, 'Colombia', 450, 330, 80, C.cream, 19.4);
-            word(hi, 'घने वर्षावन', 450, 1300, 66, C.cream, 20.4);
+            word(kit, 'Dense rainforests', 450, 1300, 64, C.cream, 20.4);
         }
 
         // --- 6 · the poison comes from its food; in a zoo it is harmless -------------------------
@@ -386,7 +431,7 @@ Motion.scene({
                 }).draw(g);
                 g.restore();
             }
-            word(hi, 'ज़हर = खाना!', 450, 330, 80, '#9be37a', 24.0);
+            word(kit, 'Poison = food!', 450, 330, 80, '#9be37a', 24.0);
             // the zoo: bars drop over the frog, and the poison is crossed out
             const bars = E.out(seg(26.3, 26.8));
             if (bars > 0) {
@@ -397,7 +442,7 @@ Motion.scene({
                     kit.sprite('bar', { x: -12, y: -330, w: 24, h: 660 }, (c) => P.cutout(c, P.roundRect(-8, -320, 16, 640, 6), '#8a8f96', 'bar', { border: 2 })).draw(g);
                     g.restore();
                 }
-                word(hi, 'चिड़ियाघर में: ज़हर नहीं', 450, 1250, 56, C.cream, 26.8);
+                word(kit, 'In a zoo: no poison', 450, 1250, 62, C.cream, 26.8);
             }
             void u;
         }
@@ -420,7 +465,7 @@ Motion.scene({
                 const press = E.inOut(seg(30.4, 31.0)) * (1 - E.inOut(seg(31.4, 31.9)));
                 if (press > 0) D.hand(g, lerp(760, 560, press), lerp(1300, 1090, press), 110, -Math.PI * 0.75, 'open', { side: 'left' });
             }
-            word(hi, 'ऐसे ही कमाल के फैक्ट्स!', 450, 300, 56, C.cream, 29.0);
+            word(kit, 'More amazing facts!', 450, 300, 64, C.cream, 29.0);
         }
     },
 
