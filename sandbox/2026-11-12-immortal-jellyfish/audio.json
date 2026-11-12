@@ -1,0 +1,14 @@
+{
+  "music": "private/voice.wav",
+  "musicDb": 0,
+  "duration": 49,
+  "sfxDir": "../../assets/sfx",
+  "align": "onset",
+  "cues": [
+    ["cavity_hum", 0.0, -20], ["whoosh_close", 0.45, -8],
+    ["glow_swell", 6.9, -16], ["glow_swell", 11.8, -16], ["tick", 13.4, -14],
+    ["suck_up", 17.6, -12], ["field_bloom", 21.0, -14], ["glow_swell", 24.6, -16], ["spin_rise", 24.7, -16],
+    ["scan", 28.8, -16], ["cavity_hum", 30.0, -22], ["whoosh_close", 39.9, -8], ["glow_swell", 37.4, -16],
+    ["pop", 45.3, -12], ["button_click", 46.45, -8], ["cavity_hum", 45.0, -22]
+  ]
+}
