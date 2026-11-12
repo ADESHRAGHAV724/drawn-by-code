@@ -24,6 +24,40 @@ In testing. Films: `sandbox/2026-11-12-jellyfish/` (10 s, the first test, before
 | `vignette(g, env, amount)` · `grain(ctx, env, t)` | the grade (cached) and film grain (four cached tiles) |
 | `load(src)` | an image for setup(); a missing file returns null |
 
+## Workflow: a facts Short from script to MP4
+
+The user makes animal-facts Shorts for a Hindi-speaking YouTube channel (talks in Hinglish).
+What worked, in order:
+
+1. **Script first, facts checked.** 7–11 short Hindi lines (Devanagari, one fact per line),
+   a hook in line 1, a subscribe line last; English captions on screen. Correct popular
+   myths before they reach the script and say so (e.g. «1 ml kills 20,000 people» → «1 mg
+   ≈ 10 people / 20,000 mice»; «research to make humans immortal» → «to understand ageing»;
+   «9 brains» → «1 brain + a nerve centre in every arm», captioned as a question). Give the
+   lines as separate ```text blocks so they paste into ElevenLabs; the user records them in
+   one file (voice «Jeet – Charming Social Media Voice» for facts).
+2. **Experiment:** `node engine/new.mjs <name> --style cinematic-facts --aspect 9:16
+   --duration <s>`; the voice goes to `private/voice-elevenlabs.mp3` (never committed).
+3. **Measure the voice:** `ffmpeg -i voice.mp3 -af silencedetect=noise=-35dB:d=0.15 -f null -`,
+   then map the pauses to the script lines by their length (short pauses fall inside a line
+   at commas and «...»). Write the table into brief.md.
+4. **Re-time:** a `make-voice.sh` that adds ~0.4 s of air and pads to the film length
+   (`adelay=400:all=1,apad=whole_dur=<s>`) → `private/voice.wav`; `audio.json` with
+   `"music": "private/voice.wav"` plus a few effects from `assets/sfx/` (whoosh on cuts,
+   glow_swell on reveals, button_click on subscribe). `node engine/mix.mjs`.
+5. **Scene:** one shot list `[start, camera, subject options, extra]`, captions per line,
+   `shots` declared. The subject is painted in code (photos only as reference: the user's
+   images are usually downloaded from the web — keep them in `private/` and don't show them
+   unless the user owns the rights; a code-made subject has no copyright problem).
+6. **Look before render:** stills at 360–540 width at every shot, tile them, read them; fix;
+   then `review.mjs` (no warnings, no still stretches), then the 1080 render (~2 s per second
+   of film), `-crf 26` copy in `render/`, strip, GIF under 5 MB, docs, INDEX row, commit, push.
+
+Cast written so far, to reuse: `sandbox/2026-11-12-immortal-jellyfish/turri.js` (a jellyfish,
+side and top views), `sandbox/2026-11-12-octopus/octo.js` (an octopus with x-ray hearts,
+vessels, nerves, beak, a `cute` face; fish schools; a seabed with kelp, coral and shells; a
+ball-and-stick molecule), `sandbox/2026-11-12-jellyfish/scene.js` (a moon jelly).
+
 ## Style rules
 
 - **One idea per caption**, two lines: a short white set-up (≤ 2 words), then the punch in
