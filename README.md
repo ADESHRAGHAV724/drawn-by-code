@@ -126,6 +126,7 @@ to see its strip, files and the videos made with it.
 | [felt3d](styles/felt3d/)             | needle-felted wool puppets, raymarched, over any backdrop                               | in testing |
 | [engraving](styles/engraving/)       | a plate of the «Description de l'Égypte» drawn in charcoal on old paper, temple reliefs | in testing |
 | [sumi-e](styles/sumi-e/)             | Japanese ink on washi: dry brush, washes in mist, vermilion as the only colour           | in testing |
+| [cinematic-facts](styles/cinematic-facts/) | documentary-explainer Shorts: deep graded scenes, light shafts, bold two-line captions | in testing |
 
 To add one: the `new-style` skill, and [CONTRIBUTING.md](CONTRIBUTING.md) for the pull request.
 
@@ -194,7 +195,7 @@ brand's SVG, bounding volumes that must not cast shadows.
 
 ## Licenses
 
-Patrick Hand, Shrikhand and Short Stack fonts under the SIL OFL 1.1 (`fonts/`). The effects in
+Patrick Hand, Shrikhand, Short Stack and Anton fonts under the SIL OFL 1.1 (`fonts/`). The effects in
 `assets/sfx/` were generated with ElevenLabs: commercial use requires a paid plan.
 A client's source files (brand copy, logo files, fonts, music) live in the experiment's
 `private/` folder and are not committed, or in the client's own repo: a folder marked with a
