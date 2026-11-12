@@ -24,6 +24,20 @@ In testing. Films: `sandbox/2026-11-12-jellyfish/` (10 s, the first test, before
 | `vignette(g, env, amount)` · `grain(ctx, env, t)` | the grade (cached) and film grain (four cached tiles) |
 | `load(src)` | an image for setup(); a missing file returns null |
 
+### The «field notebook» look: `styles/cinematic-facts/notebook.js` → `Note`
+
+A second look in this style, measured on a tardigrade Short the user showed: a manila notebook
+page instead of the sea, ink and red captions instead of glowing ones, lab props. Fonts: Anton,
+Space Mono (labels), Patrick Hand (hand-written numbers).
+
+| Call | What it does |
+|---|---|
+| `page(g, env, kind, { key })` | 'paper' (manila #cdb288, ruled lines, fold crease, binder holes, white pencil sprigs), 'dark' (microscope), 'teal' (sea), 'sky' (cached) |
+| `header(g, env, label, fig, { dark })` | mono section label left, «FIG. n» right, over a thin rule (y 200) |
+| `caption(g, t, a, a2, b, top, bottom, { dark })` | small ink line pops at a, big red line slams in at a2 (on the voice word), caps tucked under the small line |
+| `scope(g, env, cx, cy, R, inside)` | microscope field: cells in the background, `inside(g)` clipped, inner shadow, black rim, scale bar |
+| `circleNum` · `redLine` · `callout` · `card` · `tornLabel` · `shadow` | red hand-drawn circled numbers and lines, a magnifier callout with leader lines, kraft cards, a torn label, a soft contact shadow |
+
 ## Workflow: a facts Short from script to MP4
 
 The user makes animal-facts Shorts for a Hindi-speaking YouTube channel (talks in Hinglish).
@@ -76,3 +90,5 @@ ball-and-stick molecule), `sandbox/2026-11-12-jellyfish/scene.js` (a moon jelly)
 - 2026-11-12 · jellyfish · Live canvas blur on two far jellies and near particles cost ~4 s a frame at 1080 (15 min for 10 s). Pre-blurred sprites took the immortal-jellyfish Short (49 s, more going on) to ~2 s of render per second of film.
 - 2026-11-12 · immortal-jellyfish · Photo cutouts with a torn white edge read as collage, not cinema, in this style; the user preferred the subject painted in code after the photos (`turri.js`): a clear dome lit at its edges, a beaded bright rim, the red cross of the stomach glowing, a halo of curling tentacles.
 - 2026-11-12 · octopus · Fast cutting (a shot every 1.5–3 s) reads as energetic when each cut has a short white flash (~0.12 s) and a zoom punch that settles; declare every shot in `shots`, or review.mjs reports the cuts as jumps. Coloured lines over glows must be drawn opaque: additive blue on a glow sums to white.
+- 2026-11-12 · planaria · A radial gradient that fades to `rgba(0,0,0,0)` darkens a light page: canvas interpolates through grey. Fade a blotch to its own colour with alpha 0 (`'#b39870' + '00'`). In a cached sprite a one-time `filter: blur()` is fine (soft pigment, gut, sheen); stacked hard insets read as contour lines.
+- 2026-11-12 · planaria · A soft animal that bends (a worm, an eel) is painted once straight and drawn along a spine in thin rotated strips (`planaria.js`): all the detail of a sprite, any pose, and pieces after a cut are just a range of strips.

@@ -19,3 +19,4 @@
 | 2026-11-12 | [jellyfish](2026-11-12-jellyfish/) | [mp4](2026-11-12-jellyfish/render/jellyfish.mp4) | «cinematic facts» test (code-painted, Anton captions) · 9:16 · 10 s | round 1 | Live canvas blur is slow: cache out-of-focus layers as sprites in longer films |
 | 2026-11-12 | [immortal-jellyfish](2026-11-12-immortal-jellyfish/) | [mp4](2026-11-12-immortal-jellyfish/render/immortal-jellyfish.mp4) | cinematic-facts (new kit) · 9:16 Short · Hindi voice-over | round 1 (auto) | Blur once, reuse: pre-blurred sprites took render from ~90 s to ~2 s per second of film |
 | 2026-11-12 | [octopus](2026-11-12-octopus/) | [mp4](2026-11-12-octopus/render/octopus.mp4) | cinematic-facts, fast cuts (22 shots) · 9:16 Short · Hindi voice-over | round 1 (auto) | Additive blue on a glow turns white: draw coloured lines opaque, keep `lighter` for the glows |
+| 2026-11-12 | [planaria](2026-11-12-planaria/) | cinematic-facts | in progress | |
