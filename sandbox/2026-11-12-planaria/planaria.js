@@ -272,7 +272,7 @@ const Plan = (() => {
             g.translate(x - Math.cos(ang) * fx * len, y - Math.sin(ang) * fx * len);
             g.rotate(ang + Math.PI);
             const sx = (aa * L - sp.box.x) * px, sw = (bb - aa) * L * px;
-            const ext = i < n - 1 && bb === b ? 1.2 : 0; // overlap neighbours to hide seams
+            const ext = alpha >= 1 && i < n - 1 && bb === b ? 1.2 : 0; // overlap neighbours to hide seams
             g.drawImage(sp.canvas, sx, 0, sw + ext * px, sp.canvas.height, 0, -HW * sc, (bb - aa) * len + ext * sc, 2 * HW * sc);
             g.restore();
         }

@@ -1,0 +1,13 @@
+{
+  "duration": 15,
+  "sfxDir": "../../assets/sfx",
+  "align": "onset",
+  "cues": [
+    ["cavity_hum", 0.0, -24], ["pencil_circle", 0.7, -14], ["spark_snap", 1.35, -10],
+    ["page_turn", 2.6, -14], ["tick", 2.85, -16], ["tick", 3.1, -16], ["tick", 3.35, -16], ["tick", 3.6, -16], ["tick", 3.85, -16], ["tick", 4.1, -16], ["stamp", 4.3, -10],
+    ["page_turn", 5.2, -14], ["scan", 5.6, -14], ["glow_swell", 6.1, -14], ["pencil_circle", 6.5, -16], ["pencil_circle", 6.8, -16], ["pencil_circle", 7.1, -16],
+    ["page_turn", 8.0, -14], ["scribble", 8.2, -16], ["spark_snap", 8.75, -10], ["field_bloom", 9.2, -16],
+    ["page_turn", 10.6, -14], ["paper_land", 10.75, -12], ["paper_land", 10.87, -12], ["paper_land", 10.99, -12], ["paper_land", 11.11, -12], ["stamp", 11.8, -8],
+    ["page_turn", 12.9, -14], ["button_click", 13.5, -8]
+  ]
+}

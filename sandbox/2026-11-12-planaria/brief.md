@@ -18,3 +18,16 @@
 ## Round 0 · look test (before the voice)
 
 Four shots (hook, microscope, pieces, size) to approve the look: `look-test.jpg`.
+
+## Round 1 · 15 s demo (no voice)
+
+| Time | Shot | Caption |
+|---|---|---|
+| 0–2.6 | the worm glides, a dashed red line on the neck, snip, the head slides off | CUT OFF ITS HEAD / IT GROWS BACK |
+| 2.6–5.2 | the headless body grows a white head that darkens; a DAY 01→07 counter | A NEW HEAD IN / JUST 7 DAYS |
+| 5.2–8.0 | microscope (dark page): x-ray worm, neoblasts light up, red circled 1-2-3 | THE SECRET / NEOBLASTS |
+| 8.0–10.6 | two cuts, three pieces drift apart, the headless ones grow heads | EVERY PIECE / A NEW WORM |
+| 10.6–12.9 | four kraft cards with red «?», then a worm on each | AGE LIMIT? / NONE |
+| 12.9–15 | the worm glides | FOLLOW FOR / MORE FACTS |
+
+Sound: effects only (`audio.json`): page turns on cuts, pencil circles, snips, ticks on the counter, stamps.
